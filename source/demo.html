@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>前台首頁</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/all.css">
+</head>
+<body>
+  <div class="container" id="app">
+    Filter
+    {{ number | revers }}
+  </div>
+  <script src="assets/js/vendors.js"></script>
+  <script>
+    Vue.filter('revers', 
+      // 傳統函式 return 將值傳出後才可以畫面上顯示
+      // function(para){
+      //   console.log('filter revers -> para', para);
+      //   // filter revers -> para 1234567
+      //   return para
+      // }
+
+      // 箭頭函式直接回傳
+      (para) => para
+    );
+    new Vue({
+      el: '#app',
+      data: {
+        number: 1234567
+      },
+    });
+  </script>
+</body>
+</html>
