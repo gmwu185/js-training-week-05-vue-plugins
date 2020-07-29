@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 原型、屬性、方法</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/all.css">
+</head>
+<body>
+  <div class="container" id="app">
+    <h1>Vue 原型、屬性、方法</h1>
+    <button id="btn" ref="refBtn" type="button">這是按鈕</button>
+    <button id="btn2" ref="refBtn2" type="button">這是按鈕</button>
+  </div>
+  
+  <script src="assets/js/vendors.js"></script>
+  <script>
+    /*----------  Vue 實體  ----------*/
+    new Vue({
+      el: '#app',
+      data: {
+        number: 1234567,
+        date: 1595952877,
+        string: '這句話需要被反轉'
+      },
+      // created() {
+      //   // console.log(this);
+      //   console.log('created() -> document.querySelector("#btn")', document.querySelector("#btn"));
+      // },
+      mounted() {
+        // console.log(this);
+        // console.log('document.querySelector("#btn")', document.querySelector("#btn"));
+        // console.log('mounted() -> this.$refs', this.$refs);
+
+        this.$refs.refBtn.className = 'btn btn-primary';
+        this.$refs.refBtn2.className = 'btn btn-success';
+      },
+    });
+    /*----------  Vue 實體  ----------*/
+  </script>
+</body>
+</html>
