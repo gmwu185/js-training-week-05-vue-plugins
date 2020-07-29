@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue refs 操作 BS4 modal</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/all.css">
+</head>
+<body>
+  <div class="container" id="app">
+    <h1>Vue refs 操作 BS4 modal</h1>
+    <button id="btn" ref="refBtn" type="button" @click="clickModal">這是按鈕</button>
+    <button id="btn2" ref="refBtn2" type="button" @click="slickModalSetTimeout">這是按鈕</button>
+
+    <!-- for jQuery - Button trigger modal -->
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Launch demo modal
+    </button> -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" ref="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <script src="assets/js/vendors.js"></script>
+  <script>
+    /*----------  Vue 實體  ----------*/
+    new Vue({
+      el: '#app',
+      data: {
+        number: 1234567,
+        date: 1595952877,
+        string: '這句話需要被反轉'
+      },
+      methods: {
+        clickModal() {
+          console.log('$(this.$refs.modal)', $(this.$refs.modal));
+          $(this.$refs.modal).modal('show');
+        },
+        slickModalSetTimeout() {
+          
+          /*----------  
+            傳統函式透過 vm 變數指定 this 就不會讓 simple call 取錯 this  
+          ----------*/
+          // let vm = this;
+          // console.log('slickModalSetTimeout() -> vm.$refs.modal', vm.$refs.modal);
+          // setTimeout(function () {
+          //   $(vm.$refs.modal).modal('show');
+          // }, 300);
+          /*----------  
+            / 傳統函式透過 vm 變數指定 this 就不會讓 simple call 取錯 this  
+          ----------*/
+          
+          /*----------  箭頭函式沒有自已的 this 直接取外層物件下的 this  ----------*/
+          setTimeout( () => {
+            $(this.$refs.modal).modal('show');
+          }, 300);
+          /*----------  /箭頭函式沒有自已的 this 直接取外層物件下的 this  ----------*/
+        }
+      },
+      // created() {
+      //   // console.log(this);
+      //   console.log('created() -> document.querySelector("#btn")', document.querySelector("#btn"));
+      // },
+      mounted() {
+        // console.log(this);
+        // console.log('document.querySelector("#btn")', document.querySelector("#btn"));
+        // console.log('mounted() -> this.$refs', this.$refs);
+
+        this.$refs.refBtn.className = 'btn btn-primary';
+        this.$refs.refBtn2.className = 'btn btn-success';
+      },
+    });
+    /*----------  Vue 實體  ----------*/
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue plugins</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/all.css">
+  <!-- vue-loading-overlay CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3.3.2/dist/vue-loading.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3.3.2/dist/vue-loading.css">
+  <!-- /vue-loading-overlay CDN -->
+</head>
+<body>
+<div class="container" id="app">
+  <loading :active.sync="isLoading"></loading>
+  <h1>Vue plugins</h1>
+</div>
+  <script src="assets/js/vendors.js"></script>
+  <script>
+    /*----------  vue-loading-overlay 插件以元件引入  ----------*/
+    console.log('VueLoading', VueLoading);
+    Vue.component('loading', VueLoading);
+    /*----------  /vue-loading-overlay 插件以元件引入  ----------*/
+    /*----------  Vue 實體  ----------*/
+    new Vue({
+      el: '#app',
+      data: {
+        number: 1234567,
+        date: 1595952877,
+        string: '這句話需要被反轉',
+        isLoading: false,
+        // isLoading: true,
+      },
+      methods: {
+      },
+      mounted() {
+      },
+    });
+    /*----------  Vue 實體  ----------*/
+  </script>
+</body>
+</html>
