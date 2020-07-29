@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter 課程使用說明</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/all.css">
+</head>
+<body>
+  <div class="container" id="app">
+    <h1>Filter 課程使用說明</h1>
+    <p>Filter 字串反轉： {{ string | reverse }}</p>
+    <p>Filter 時間戳記：{{ date | unix }}</p>
+    <p>Filter 千分號： {{ number | money }}</p>
+    <p>Filter 基本運用： {{ number | base }}</p>
+  </div>
+  
+  <script src="assets/js/vendors.js"></script>
+  <script>
+    /*----------  字串反轉  ----------*/
+    /* 傳統函式 */
+    // Vue.filter('reverse', function(value) {
+    //   return value.split('').reverse().join('')
+    // })
+
+    /* 箭頭函式 */
+    // Vue.filter('reverse', (value) => {
+    //   return value.split('').reverse().join('')
+    // })
+
+    /* 箭頭函式單行簡寫 */
+    Vue.filter('reverse', (value) => value.split('').reverse().join('') )
+    /*----------  /字串反轉  ----------*/
+    /*----------  時間戳記  ----------*/
+    Vue.filter('unix', (value) => {
+      const time = new Date(value * 1000);
+      console.log('unix', time);
+      return `${time.getFullYear()}/${time.getMonth() +1}/${time.getUTCDate()}`;
+    });
+    /*----------  /時間戳記  ----------*/
+    /*----------  Filter 千分號  ----------*/
+    Vue.filter('money', 
+      (num) => {
+        var parts = num.toString().split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return "$" + parts.join('.');
+      // return parts.join('.');
+      }
+    );
+    /*----------  /Filter 千分號  ----------*/
+    /*----------  Vue.filter() 的使用，透過 filter 裡的函式回傳參數將值呈現在畫面上  ----------*/
+    Vue.filter('base', 
+      /* 傳統函式 return 將值傳出後才可以畫面上顯示 */
+      // function(para){
+      //   console.log('filter revers -> para', para);
+      //   // filter base -> para 1234567
+      //   return para
+      // }
+
+      /* 箭頭函式直接回傳 */
+      (para) => para
+    );
+    /*----------  Vue.filter() 的使用，透過 filter 裡的函式回傳參數將值呈現在畫面上  ----------*/
+    /*----------  Vue 實體  ----------*/
+    new Vue({
+      el: '#app',
+      data: {
+        number: 1234567,
+        date: 1595952877,
+        string: '這句話需要被反轉'
+      },
+    });
+    /*----------  Vue 實體  ----------*/
+  </script>
+</body>
+</html>
