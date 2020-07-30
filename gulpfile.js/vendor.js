@@ -6,9 +6,10 @@ var vendorJs = function(cd){
   gulp
     .src([
       //NPM
-      './node_modules/axios/dist/axios.js',
-      './node_modules/vue/dist/vue.js',
       './node_modules/jquery/dist/jquery.js',
+      './node_modules/vue/dist/vue.js',
+      './node_modules/axios/dist/axios.js',
+      './node_modules/vue-loading-overlay/dist/vue-loading.min.js',
       './node_modules/bootstrap/dist/js/bootstrap.bundle.js',
       
       // 自定
