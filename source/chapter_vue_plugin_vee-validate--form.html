@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue plugins | vee-validate--form</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/all.css">
+</head>
+<body>
+  <div class="container" id="app">
+    <h1>Vue plugins</h1>
+    <h2>vue-vee-validate--form</h2>
+
+<!-- form 驗證 -->
+<validation-observer v-slot="{ invalid }">
+  <form @submit.prevent="clickMe">
+
+    <div class="form-row">
+      <div class="col-md-6 mb-3">
+        <validation-provider rules="required|min:8" v-slot="{ errors, classes, passed }">
+          <label for="minStringInput">最小字串長度限 8 字元</label>
+          <input id="minStringInput" type="text" name="字串最小長度不得小於 8 字元" class="form-control"  
+          v-model="minStringInput"
+          :class="classes">
+          <span class="invalid-feedback">{{ errors[0] }}</span>
+          <span v-if="passed" class="valid-feedback">驗證通過</span>
+        </validation-provider>
+      </div>
+      <!-- /.col-md-6 mb-3 -->
+    </div>
+    <!-- /.form-row -->
+
+    <button type="submit" class="btn btn-primary" :disabled="invalid">點我</button>
+
+  </form>
+</validation-observer>
+
+  </div>
+  <script src="assets/js/vendors.js"></script>
+  <script>
+    /*----------  註冊於全域元件  ----------*/
+    // 將 VeeValidate 驗證工具載入 input 驗證作為全域註冊
+    Vue.component('ValidationProvider', VeeValidate.ValidationProvider);
+
+    // 將 VeeValidate 完整表單 驗證工具載入 作為全域註冊
+    Vue.component('ValidationObserver', VeeValidate.ValidationObserver);
+
+    // 與 Bootstrp 一樣的驗証 Class 設定檔案
+    VeeValidate.configure({
+      classes: {
+        valid: 'is-valid',
+        invalid: 'is-invalid',
+      }
+    });
+    /*----------  /註冊於全域元件  ----------*/
+    /*----------  Vue 實體  ----------*/
+    new Vue({
+      el: '#app',
+      data: {
+        email: '',
+        minStringInput: '',
+      },
+      methods: {
+        clickMe() {
+          console.log('送出')
+        },
+      },
+      mounted() {
+      },
+    });
+    /*----------  Vue 實體  ----------*/
+  </script>
+</body>
+</html>

@@ -10,6 +10,7 @@ var vendorJs = function(cd){
       './node_modules/vue/dist/vue.js',
       './node_modules/axios/dist/axios.js',
       './node_modules/vue-loading-overlay/dist/vue-loading.min.js',
+      './node_modules/vee-validate/dist/vee-validate.full.js',
       './node_modules/bootstrap/dist/js/bootstrap.bundle.js',
       
       // 自定

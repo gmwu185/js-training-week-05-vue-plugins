@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue plugins | vee-validate--form-i18n</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/all.css">
+</head>
+<body>
+  <div class="container" id="app">
+    <h1>Vue plugins</h1>
+    <h2>vue-vee-validate--form-i18n</h2>
+
+<!-- form 驗證 -->
+<validation-observer v-slot="{ invalid }">
+  <form @submit.prevent="clickMe">
+
+    <div class="form-row">
+      <div class="col-md-6 mb-3">
+        <validation-provider rules="required|email" v-slot="{ errors, classes, passed }">
+          <label for="email">最小字串長度限 8 字元</label>
+          <input id="email" type="text" name="信箱" class="form-control"  
+          v-model="email"
+          :class="classes">
+          <span class="invalid-feedback">{{ errors[0] }}</span>
+          <span v-if="passed" class="valid-feedback">驗證通過</span>
+        </validation-provider>
+      </div>
+      <!-- /.col-md-6 mb-3 -->
+    </div>
+    <!-- /.form-row -->
+
+    <button type="submit" class="btn btn-primary" :disabled="invalid">點我</button>
+
+  </form>
+</validation-observer>
+
+  </div>
+  <script src="assets/js/vendors.js"></script>
+  <script>
+    let zh_TW = {
+      "code": "zh_TW",
+      "messages": {
+        "alpha": "{_field_} 須以英文組成",
+        "alpha_dash": "{_field_} 須以英數、斜線及底線組成",
+        "alpha_num": "{_field_} 須以英數組成",
+        "alpha_spaces": "{_field_} 須以英文及空格組成",
+        "between": "{_field_} 須介於 {min} 至 {max}之間",
+        "confirmed": " {_field_} 不一致",
+        "digits": "{_field_} 須為 {length} 位數字",
+        "dimensions": "{_field_} 圖片尺寸不正確。須為 {width} x {height} 像素",
+        "email": "{_field_} 須為有效的電子信箱",
+        "excluded": "{_field_} 的選項無效",
+        "ext": "{_field_} 須為有效的檔案",
+        "image": "{_field_} 須為圖片",
+        "oneOf": "{_field_} 的選項無效",
+        "integer": "{_field_} 須為整數",
+        "length": "{_field_} 的長度須為 {length}",
+        "max": "{_field_} 不能大於 {length} 個字元",
+        "max_value": "{_field_} 不得大於 {max}",
+        "mimes": "{_field_} 須為有效的檔案類型",
+        "min": "{_field_} 不能小於 {length} 個字元",
+        "min_value": "{_field_} 不得小於 {min}",
+        "numeric": "{_field_} 須為數字",
+        "regex": "{_field_} 的格式錯誤",
+        "required": "{_field_} 為必填",
+        "required_if": "{_field_} 為必填",
+        "size": "{_field_} 的檔案須小於 {size}KB"
+      }
+    };
+    console.log('VeeValidate zh_TW', zh_TW);
+
+    /*----------  註冊於全域元件  ----------*/
+    // 將 VeeValidate 驗證工具載入 input 驗證作為全域註冊
+    Vue.component('ValidationProvider', VeeValidate.ValidationProvider);
+
+    // 將 VeeValidate 完整表單 驗證工具載入 作為全域註冊
+    Vue.component('ValidationObserver', VeeValidate.ValidationObserver);
+
+    // 與 Bootstrp 一樣的驗証 Class 設定檔案
+    VeeValidate.configure({
+      classes: {
+        valid: 'is-valid',
+        invalid: 'is-invalid',
+      }
+    });
+    /*----------  /註冊於全域元件  ----------*/
+
+    
+    /*----------  註冊 zh_TW 語系  ----------*/
+    VeeValidate.localize('tw', zh_TW)
+    /*----------  /註冊 zh_TW 語系  ----------*/
+
+
+    /*----------  Vue 實體  ----------*/
+    new Vue({
+      el: '#app',
+      data: {
+        email: '',
+        minStringInput: '',
+      },
+      methods: {
+        clickMe() {
+          console.log('送出')
+        },
+      },
+      mounted() {
+      },
+    });
+    /*----------  Vue 實體  ----------*/
+  </script>
+</body>
+</html>

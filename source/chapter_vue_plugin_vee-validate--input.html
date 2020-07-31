@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue plugins | vee-validate--input</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/all.css">
+</head>
+<body>
+  <div class="container" id="app">
+    <h1>Vue plugins</h1>
+    <h2>vue-vee-validate--input</h2>
+    <!-- input 驗證 -->
+    <!-- rules 規則、v-slot 回饋 -->
+    <div class="form-row">
+      <!-- vue-vee-validate 基本的 input 驗證 -->
+      <div class="col-md-6 mb-3">
+        <validation-provider rules="email" v-slot="{ errors }">
+          <label for="email">Email</label>
+          <input id="email" type="email" name="email" v-model="email"
+          class="form-control">
+          <span>{{ errors[0] }}</span>
+        </validation-provider>
+      </div>
+      <!-- /.col-md-6 mb-3 -->
+      <div class="col-md-6 mb-3">
+        <!-- required|email 必填欄位 -->
+        <validation-provider rules="required|email" v-slot="{ errors, classes, passed }">
+          <label for="email">Email (必填)</label>
+          <input id="email2" type="email" name="email" class="form-control"  
+          v-model="email"
+          :class="classes">
+          <span class="invalid-feedback">{{ errors[0] }}</span>
+          <span v-if="passed" class="valid-feedback">驗證通過</span>
+        </validation-provider>
+      </div>
+      <!-- /.col-md-6 mb-3 -->
+    </div>
+    <!-- /.form-row -->
+    <div class="form-row">
+      <div class="col-md-6 mb-3">
+        <!-- required|min:8 必填欄位與最小字串長度 8 以上 -->
+        <validation-provider rules="required|min:8" v-slot="{ errors, classes, passed }">
+          <label for="minStringInput">最小字串長度限 8 字元</label>
+          <input id="minStringInput" type="text" name="minStringInput" class="form-control"  
+          v-model="minStringInput"
+          :class="classes">
+          <span class="invalid-feedback">{{ errors[0] }}</span>
+          <span v-if="passed" class="valid-feedback">驗證通過</span>
+        </validation-provider>
+      </div>
+      <!-- /.col-md-6 mb-3 -->
+    </div>
+    <!-- /.form-row -->
+  </div>
+  <script src="assets/js/vendors.js"></script>
+  <script>
+    /*----------  註冊於全域元件  ----------*/
+    // input 驗證
+    Vue.component('ValidationProvider', VeeValidate.ValidationProvider);
+    // 與 Bootstrp 一樣的驗証 Class 設定檔案
+    VeeValidate.configure({
+      classes: {
+        valid: 'is-valid',
+        invalid: 'is-invalid',
+      }
+    });
+    /*----------  /註冊於全域元件  ----------*/
+    /*----------  Vue 實體  ----------*/
+    new Vue({
+      el: '#app',
+      data: {
+        email: '',
+        minStringInput: '',
+      },
+      methods: {
+        clickMe() {
+          console.log('送出')
+        },
+      },
+      mounted() {
+      },
+    });
+    /*----------  Vue 實體  ----------*/
+  </script>
+</body>
+</html>
