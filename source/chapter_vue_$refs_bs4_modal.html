@@ -11,8 +11,8 @@
 <body>
   <div class="container" id="app">
     <h1>Vue refs 操作 BS4 modal</h1>
-    <button id="btn" ref="refBtn" type="button" @click="clickModal">這是按鈕</button>
-    <button id="btn2" ref="refBtn2" type="button" @click="slickModalSetTimeout">這是按鈕</button>
+    <button id="btn" ref="refBtn" type="button" @click="clickModal">ref 選取，執行 BS4 modal</button>
+    <button id="btn2" ref="refBtn2" type="button" @click="slickModalSetTimeout">ref 選取觸發後 setTimeout() 廷 1000 毫秒後執行 BS4 modal</button>
 
     <!-- for jQuery - Button trigger modal -->
     <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -74,7 +74,7 @@
           /*----------  箭頭函式沒有自已的 this 直接取外層物件下的 this  ----------*/
           setTimeout( () => {
             $(this.$refs.modal).modal('show');
-          }, 300);
+          }, 1000);
           /*----------  /箭頭函式沒有自已的 this 直接取外層物件下的 this  ----------*/
         }
       },

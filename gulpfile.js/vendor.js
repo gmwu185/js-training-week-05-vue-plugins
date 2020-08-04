@@ -9,12 +9,12 @@ var vendorJs = function(cd){
       './node_modules/jquery/dist/jquery.js',
       './node_modules/vue/dist/vue.js',
       './node_modules/axios/dist/axios.js',
-      './node_modules/vue-loading-overlay/dist/vue-loading.min.js',
-      './node_modules/vee-validate/dist/vee-validate.full.js',
       './node_modules/bootstrap/dist/js/bootstrap.bundle.js',
       
-      // 自定
-      // '../.tmp/vendors/**/**.js',
+      // vue plugins
+      './node_modules/vue-loading-overlay/dist/vue-loading.min.js',
+      './node_modules/vee-validate/dist/vee-validate.full.js',
+      './source/assets/js/plugins/VeeValidate/VeeValidateLocalize_zh_TW.js',
     ])
     .pipe($.order(['vue.js', 'axios.js', 'jquery.js',]))
     .pipe($.concat('vendors.js'))

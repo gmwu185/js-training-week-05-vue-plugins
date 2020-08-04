@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue plugins | vee-validate--form-i18n</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/all.css">
+  <style>
+    .c-formBtnGroup.is-invalid ~ .invalid-feedback {
+      display: block;
+    }
+    .u-flexBasis--content {
+      flex-basis: content !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <loading :active.sync="isLoading"></loading>
+    <h1 class="text-center my-5">Vue plugins：vue-vee-validate--form-i18n</h1>
+
+    <!-- form 驗證 -->
+    <validation-observer 
+    v-slot="{ invalid }"
+    tag="form"
+    novalidate
+    @submit.prevent="submitActive"
+    >
+      <!-- <form @submit.prevent="submitActive"> -->
+
+        <div class="form-row">
+          <div class="col-md-6 mb-3 mx-auto">
+
+            <validation-provider 
+            rules="required" 
+            name="收件人姓名"
+            v-slot="{ errors, classes, passed }">
+              <div class="form-group required">
+                <label for="recipient"><span class="text-danger pr-1"> * </span>收件人姓名</label>
+                <input class="form-control" type="text" id="recipient" autocomplete="off" placeholder="ex: 王小明"
+                v-model="form.recipient"
+                :class="classes">
+                <span class="invalid-feedback">{{ errors[0] }}</span>
+                <span v-if="passed" class="valid-feedback">驗證通過</span>
+              </div>
+            </validation-provider>
+
+            <validation-provider rules="required|email" v-slot="{ errors, classes, passed }">
+              <div class="form-group required">
+                <label for="email"><span class="text-danger pr-1"> * </span>Email</label>
+                <input class="form-control" type="email" id="email" autocomplete="off" placeholder="ex: abc@gmail.com"
+                v-model="form.email"
+                :class="classes">
+                <span class="invalid-feedback">{{ errors[0] }}</span>
+                <span v-if="passed" class="valid-feedback">驗證通過</span>
+              </div>
+            </validation-provider>
+            
+            <validation-provider 
+            :rules="{ required: true, regex:/^((?=(09))[0-9]{10})$/ }" 
+            name="手機號碼"
+            v-slot="{ errors, classes, passed }">
+              <!-- 
+                * 參考來源： 
+                https://github.com/shihlikai/shihlikai.github.io/blob/master/src/components/Product/Cart.vue#L99
+              -->
+              <div class="form-group required">
+                <label for="phone"><span class="text-danger pr-1"> * </span>手機號碼</label>
+                <input class="form-control" type="tel" id="phone" autocomplete="off" 
+                placeholder="ex: 0912345678 | 最大長度 10 位數字" maxlength="10"
+                v-model="form.phone"
+                :class="classes">
+                <span class="invalid-feedback">{{ errors[0] }}</span>
+                <span v-if="passed" class="valid-feedback">驗證通過</span>
+              </div>
+            </validation-provider>
+
+            <validation-provider 
+            rules="required" 
+            name="地址"
+            v-slot="{ errors, classes, passed }">
+              <div class="form-group required">
+                <label for="address"><span class="text-danger pr-1"> * </span>地址</label>
+                <input class="form-control" type="text" id="address" autocomplete="off" placeholder="ex: 100台北市中正區重慶南路一段122號 (中華民國總統府)"
+                v-model="form.address"
+                :class="classes">
+                <span class="invalid-feedback">{{ errors[0] }}</span>
+                <span v-if="passed" class="valid-feedback">驗證通過</span>
+              </div>
+            </validation-provider>
+
+            <validation-provider 
+            tag="div"
+            rules="required" 
+            name="付款方式"
+            v-slot="{ errors, classes, passed }">
+              <div class="form-group required">
+                <!-- 
+                  * bootstrap Checkbox and radio buttons: 
+                  - https://getbootstrap.com/docs/4.3/components/buttons/#checkbox-and-radio-buttons 
+                  - data-toggle="buttons" 不能使用在 .btn-group.btn-group-toggle 無法傳值
+                -->
+                <label><span class="text-danger pr-1"> * </span>付款方式一</label>
+                <div class="btn-group btn-group-toggle c-formBtnGroup d-inline-block" :class="classes">
+                  <label class="btn btn-outline-dark" 
+                  v-for="(paymode, key) in paymodes" 
+                  :key="paymode" 
+                  :class=" {'active' : form.paymode === paymode }"
+                  :for="'option' + key"
+                  >
+                  <!--  
+                    * 寫法一  :class=" { 'active' : form.paymode === paymode,  }" 
+                    * 寫法二  :class=" form.paymode === paymode ? 'active' : '' " 
+                  -->
+                    <input type="radio" autocomplete="off" name="options"
+                    v-model="form.paymode" 
+                    :id="'option' + key"
+                    :value="paymode"
+                    > {{ paymode }}
+                  </label>
+                </div>
+                <span class="invalid-feedback">{{ errors[0] }}</span>
+              </div>
+            </validation-provider>
+            
+            <div class="form-group">
+              <label>付款方式二</label>
+              <select id="paymodeTwo" class="form-control" v-model="form.paymodeTwo" required>
+                <option 
+                :value="form.paymodeTwo='請選擇付款方式'"
+                v-if=" form.paymodeTwo === null || form.paymodeTwo === '' ||  form.paymodeTwo === '請選擇付款方式' "
+                disabled="">請選擇付款方式</option>
+                <option
+                v-for="(paymodeTwo, key) in paymodeTwos" 
+                :value="paymodeTwo" :key="paymodeTwo">{{ paymodeTwo }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">留言</label>
+              <textarea id="message" class="form-control" rows="5" autocomplete="off" placeholder="留言可留空"></textarea>
+            </div>
+
+            <div class="form-group text-right">
+              <button type="submit" class="btn btn-dark"
+              :disabled="invalid"
+              @click="handelQuantityMinus($event)">送出訂單</button>
+            </div>
+
+          </div>
+          <!-- /.col-md-6 mb-3 -->
+        </div>
+        <!-- /.form-row -->
+
+        <!-- <button type="submit" class="btn btn-primary" :disabled="invalid">點我</button> -->
+
+      <!-- </form> -->
+    </validation-observer>
+
+  </div>
+  <!-- /#app.container -->
+  <script src="assets/js/vendors.js"></script>
+  <!-- <script src="assets/plugins/VeeValidate/VeeValidateLocalize_zh_TW.js"></script> -->
+  <script>
+    // 查 VeeValidateLocalize_zh_TW 是否由 vendors.js 引入成功
+    console.log('VeeValidate zh_TW', VeeValidateLocalize_zh_TW);
+
+    /*----------  註冊於全域元件  ----------*/
+    // 將 VeeValidate 驗證工具載入 input 驗證作為全域註冊
+    Vue.component('ValidationProvider', VeeValidate.ValidationProvider);
+
+    // 將 VeeValidate 完整表單 驗證工具載入 作為全域註冊
+    Vue.component('ValidationObserver', VeeValidate.ValidationObserver);
+
+    // 與 Bootstrp 一樣的驗証 Class 設定檔案
+    VeeValidate.configure({
+      classes: {
+        valid: 'is-valid',
+        invalid: 'is-invalid',
+      }
+    });
+    /*----------  /註冊於全域元件  ----------*/
+    
+    /*----------  註冊 zh_TW 語系  ----------*/
+    VeeValidate.localize('tw', VeeValidateLocalize_zh_TW);
+    /*----------  /註冊 zh_TW 語系  ----------*/
+
+    /*----------  vue-loading-overlay 插件以元件引入  ----------*/
+    console.log('VueLoading', VueLoading);  // 確任 vue-loading-overlay 是否正確戴入
+    Vue.component('loading', VueLoading);  // 戴入的 vue-loading-overlay 宣告成全域 component 
+    /*----------  /vue-loading-overlay 插件以元件引入  ----------*/
+
+    /*----------  Vue 實體  ----------*/
+    new Vue({
+      el: '#app',
+      data: {
+        container: {},
+        form: {
+          recipient: '',
+          email: '',
+          phone: '',
+          address: '',
+          paymode: null,  // null 預設一定要選，直接預設指定使用資料字串，例：'WebATM'
+          paymodeTwo: null
+        },
+        isLoading: false,
+        paymodes: [
+          'WebATM', 'ATM', 'Barcode', 'Credit', 'ApplePay', 'GooglePay'
+        ],
+        paymodeTwos: [
+          '地下錢莊', '高利貸'
+        ],
+      },
+      methods: {
+        submitActive() {
+          this.isLoading = true;
+          setTimeout(() => {
+            console.log('送出成功');
+            alert('送出成功，確任後清空表單輸入欄位');
+            this.isLoading = false;
+            // 清除 form 資料
+            this.form = {
+              recipient: '',
+              email: '',
+              phone: '',
+              address: '',
+              paymode: null,  // null 預設一定要選，直接預設指定使用資料字串，例：'WebATM'
+              paymodeTwo: null
+            };
+            // Q: 送出後將清資料空，有辨法不要觸發表單的即時驗証嗎 ??
+          }, 2000);
+        },
+        handelQuantityMinus($event){
+          console.log('$event', $event);
+        }
+      },
+      mounted() {
+        this.isLoading = true;
+        /*----------  使用 setTimeout() 仿 AJAX  ----------*/
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1500);
+        /*----------  /使用 setTimeout() 仿 AJAX  ----------*/
+      },
+    });
+    /*----------  Vue 實體  ----------*/
+  </script>
+</body>
+</html>
