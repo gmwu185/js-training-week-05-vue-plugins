@@ -1,1 +1,0 @@
-const uuid = 'a70f537b-d0f1-4553-81bb-1767acf549d1'; // 請加入個人的 UUID
