@@ -29,7 +29,7 @@
 ### Vue vee-validate
 - ValidationProvider 元件表單驗證
 - ValidationObserver & ValidationProvider 元件
-  - input 驗證 e-mail、必填、最小字串長度
+  - input 驗證 e-mail、必填、最小字串長度
   - 表單驗證繁體中文化
 
 ## 其他
