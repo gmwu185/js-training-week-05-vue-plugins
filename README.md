@@ -1,5 +1,6 @@
 # 成品頁面
-- [實作與觀念片段列表連結](index.html)
+- [實作與觀念片段列表連結](https://gmwu185.github.io/js-training-week-05-vue-plugins/index.html)
+
 
 
 
